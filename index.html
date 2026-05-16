@@ -6,67 +6,7 @@
     <title>PicoCrypt Web | IIDZII</title>
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/cairo@5.1.0/index.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        html{scroll-behavior:smooth}
-        body{font-family:'Cairo',sans-serif;background:#050508;color:#e0e0e0;min-height:100vh;overflow-x:hidden}
-        #particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-        .glass{background:rgba(12,12,25,0.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,200,150,0.12);box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.03)}
-        .glass-card{background:rgba(15,15,30,0.6);backdrop-filter:blur(12px);border:1px solid rgba(0,200,150,0.08);transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
-        .glass-card:hover{border-color:rgba(0,200,150,0.2);box-shadow:0 12px 40px rgba(0,200,150,0.08)}
-        .neon-text{color:#00c896;text-shadow:0 0 20px rgba(0,200,150,0.4),0 0 60px rgba(0,200,150,0.15)}
-        .neon-border:focus-within{border-color:#00c896!important;box-shadow:0 0 0 3px rgba(0,200,150,0.15),0 0 20px rgba(0,200,150,0.1)}
-        .btn-primary{background:linear-gradient(135deg,#00c896,#00a37a);color:#000;font-weight:700;transition:all 0.3s ease;position:relative;overflow:hidden}
-        .btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s ease}
-        .btn-primary:hover::before{left:100%}
-        .btn-primary:hover{box-shadow:0 8px 30px rgba(0,200,150,0.35);transform:translateY(-2px)}
-        .btn-primary:active{transform:translateY(0)}
-        .btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
-        .btn-primary:disabled::before{display:none}
-        .btn-secondary{background:rgba(255,255,255,0.05);border:1px solid rgba(0,200,150,0.3);color:#00c896;transition:all 0.3s ease;cursor:pointer}
-        .btn-secondary:hover{background:rgba(0,200,150,0.1);border-color:#00c896}
-        .btn-copy{background:rgba(0,200,150,0.1);border:1px solid rgba(0,200,150,0.2);color:#00c896;transition:all 0.3s ease;cursor:pointer;border-radius:8px;padding:6px 10px}
-        .btn-copy:hover{background:rgba(0,200,150,0.2);border-color:#00c896;transform:scale(1.05)}
-        .btn-copy:active{transform:scale(0.95)}
-        .gradient-text{background:linear-gradient(135deg,#00c896,#00d4ff,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .tab-active{background:rgba(0,200,150,0.15);border-color:#00c896;color:#00c896}
-        .drop-zone{border:2px dashed rgba(0,200,150,0.2);transition:all 0.3s ease}
-        .drop-zone.drag-over{border-color:#00c896;background:rgba(0,200,150,0.05);box-shadow:0 0 30px rgba(0,200,150,0.1)}
-        .progress-bar{height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
-        .progress-fill{height:100%;background:linear-gradient(90deg,#00c896,#00d4ff);border-radius:2px;transition:width 0.3s ease;box-shadow:0 0 10px rgba(0,200,150,0.4)}
-        .strength-weak{background:#ef4444;box-shadow:0 0 8px rgba(239,68,68,0.4)}
-        .strength-fair{background:#f59e0b;box-shadow:0 0 8px rgba(245,158,11,0.4)}
-        .strength-good{background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,0.4)}
-        .strength-strong{background:#00c896;box-shadow:0 0 8px rgba(0,200,150,0.4)}
-        .scroll-reveal{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
-        .scroll-reveal.visible{opacity:1;transform:translateY(0)}
-        .hex-grid{background-image:radial-gradient(circle at 25% 25%,rgba(0,200,150,0.03) 1px,transparent 1px),radial-gradient(circle at 75% 75%,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px}
-        @keyframes shield-pulse{0%,100%{filter:drop-shadow(0 0 8px rgba(0,200,150,0.3))}50%{filter:drop-shadow(0 0 20px rgba(0,200,150,0.6))}}
-        .shield-glow{animation:shield-pulse 3s ease-in-out infinite}
-        .toggle-slider{position:relative;width:100%;height:48px;border-radius:14px;overflow:hidden;cursor:pointer}
-        .toggle-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,200,150,0.15),rgba(0,163,122,0.1));border:1px solid rgba(0,200,150,0.2);transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
-        .toggle-slider.decrypt .toggle-bg{background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,163,122,0.1));border-color:rgba(0,212,255,0.2)}
-        .toggle-indicator{position:absolute;top:3px;bottom:3px;right:3px;width:calc(50% - 3px);background:linear-gradient(135deg,#00c896,#00a37a);border-radius:12px;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:0 4px 15px rgba(0,200,150,0.3)}
-        .toggle-slider.decrypt .toggle-indicator{transform:translateX(-100%);right:auto;left:3px;background:linear-gradient(135deg,#00d4ff,#00a3cc);box-shadow:0 4px 15px rgba(0,212,255,0.3)}
-        .toggle-text{position:absolute;top:0;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.875rem;transition:all 0.3s ease;z-index:2}
-        .toggle-text-left{right:0;color:#00c896}
-        .toggle-text-right{left:0;color:#666}
-        .toggle-slider.decrypt .toggle-text-left{color:#666}
-        .toggle-slider.decrypt .toggle-text-right{color:#00d4ff}
-        ::-webkit-scrollbar{width:6px}
-        ::-webkit-scrollbar-track{background:#050508}
-        ::-webkit-scrollbar-thumb{background:rgba(0,200,150,0.3);border-radius:3px}
-        ::-webkit-scrollbar-thumb:hover{background:rgba(0,200,150,0.5)}
-        .cipher-font{font-family:'Courier New',monospace;color:rgba(0,200,150,0.7);letter-spacing:1.5px}
-        .file-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(0,200,150,0.08);border:1px solid rgba(0,200,150,0.15);border-radius:6px;padding:4px 8px;font-size:0.7rem;color:#00c896}
-        .file-badge svg{width:12px;height:12px;flex-shrink:0}
-        .step-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0}
-        @media(min-width:640px){.step-num{width:48px;height:48px;border-radius:14px;font-size:1.25rem}}
-        .icon-sm{width:14px;height:14px;flex-shrink:0}
-        .icon-xs{width:12px;height:12px;flex-shrink:0}
-        @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-        .spinner{animation:spin 1s linear infinite}
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="hex-grid">
     <canvas id="particles-canvas"></canvas>
@@ -115,7 +55,7 @@
                 <span class="gradient-text">بأعلى معايير التشفير</span>
             </h1>
             <p class="scroll-reveal text-gray-500 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed px-2">
-                أداة تشفير احترافية تعمل مباشرة في متصفحك بصيغة <code class="bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded text-xs">.pcdz</code>
+                أداة تشفير احترافية تعمل مباشرة في متصفحك وتصدر بصيغة <code class="bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded text-xs">.pcdz</code>
             </p>
         </div>
     </section>
@@ -127,15 +67,15 @@
             <div class="scroll-reveal glass rounded-2xl p-1 sm:p-1.5 mb-6 sm:mb-8 flex gap-1">
                 <button onclick="switchTab('file')" id="tab-file" class="tab-btn tab-active flex-1 py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 sm:gap-2">
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    <span class="truncate">الملفات</span>
+                    <span>الملفات</span>
                 </button>
                 <button onclick="switchTab('text')" id="tab-text" class="tab-btn flex-1 py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold text-gray-400 transition-all flex items-center justify-center gap-1.5 sm:gap-2">
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
-                    <span class="truncate">النصوص</span>
+                    <span>النصوص</span>
                 </button>
                 <button onclick="switchTab('keygen')" id="tab-keygen" class="tab-btn flex-1 py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold text-gray-400 transition-all flex items-center justify-center gap-1.5 sm:gap-2">
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-                    <span class="truncate">المفاتيح</span>
+                    <span>المفاتيح</span>
                 </button>
             </div>
 
@@ -147,7 +87,7 @@
                     </div>
                     <div class="min-w-0">
                         <h3 class="text-base sm:text-lg font-bold text-white truncate">تشفير وفك تشفير الملفات</h3>
-                        <p class="text-[10px] sm:text-xs text-gray-500">صيغة PicoCrypt الحقيقية &bull; <code class="text-emerald-400">.pcdz</code></p>
+                        <p class="text-[10px] sm:text-xs text-gray-500">صيغة PicoCrypt الأصلية &bull; <code class="text-emerald-400">.pcdz</code></p>
                     </div>
                 </div>
 
@@ -168,12 +108,11 @@
                     <p class="text-gray-400 text-sm sm:text-base mb-1">اسحب الملف هنا أو انقر للاختيار</p>
                     <p class="text-gray-600 text-[10px] sm:text-xs">يدعم جميع أنواع الملفات &bull; التصدير بصيغة .pcdz</p>
                     <div class="flex flex-wrap justify-center gap-1.5 mt-3">
-                        <span class="file-badge"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> PDF</span>
-                        <span class="file-badge"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> صور</span>
-                        <span class="file-badge"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> فيديو</span>
-                        <span class="file-badge"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg> صوت</span>
-                        <span class="file-badge"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg> أرشيف</span>
-                        <span class="file-badge"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> أي صيغة</span>
+                        <span class="file-badge"><svg class="icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> PDF</span>
+                        <span class="file-badge"><svg class="icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> صور</span>
+                        <span class="file-badge"><svg class="icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> فيديو</span>
+                        <span class="file-badge"><svg class="icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg> صوت</span>
+                        <span class="file-badge"><svg class="icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> أي صيغة</span>
                     </div>
                 </div>
 
@@ -255,7 +194,7 @@
                     </div>
                     <div>
                         <h3 class="text-base sm:text-lg font-bold text-white">تشفير وفك تشفير النصوص</h3>
-                        <p class="text-[10px] sm:text-xs text-gray-500">أدخل نصاً لتشفيره أو فك تشفيره</p>
+                        <p class="text-[10px] sm:text-xs text-gray-500">أدخل نصاً لتشفيره أو نصاً مشفراً لفكه</p>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-2 gap-4 sm:gap-6 mb-5 sm:mb-6">
@@ -283,11 +222,11 @@
                 <div class="flex gap-3 mb-4 sm:mb-6">
                     <button onclick="processText('encrypt')" class="flex-1 py-2.5 sm:py-3 rounded-xl text-sm font-bold btn-primary flex items-center justify-center gap-2" type="button">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                        <span class="truncate">تشفير</span>
+                        <span>تشفير</span>
                     </button>
                     <button onclick="processText('decrypt')" class="flex-1 py-2.5 sm:py-3 rounded-xl text-sm font-bold btn-secondary flex items-center justify-center gap-2" type="button">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
-                        <span class="truncate">فك التشفير</span>
+                        <span>فك التشفير</span>
                     </button>
                 </div>
             </div>
@@ -325,7 +264,7 @@
                     <div class="flex gap-2 sm:gap-3 mt-4">
                         <button onclick="generateKey()" class="flex-1 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold btn-primary flex items-center justify-center gap-2" type="button">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                            <span class="truncate">توليد مفتاح جديد</span>
+                            <span>توليد مفتاح جديد</span>
                         </button>
                     </div>
                 </div>
@@ -385,7 +324,7 @@
                 <div class="scroll-reveal glass-card rounded-xl p-4 sm:p-6 text-center">
                     <div class="step-num bg-amber-500/10 text-amber-400 mx-auto mb-3 sm:mb-4">4</div>
                     <h4 class="text-sm sm:text-base text-white font-semibold mb-1 sm:mb-2">التصدير</h4>
-                    <p class="text-gray-500 text-[10px] sm:text-xs leading-relaxed">تصدير بصيغة .pcdz آمنة</p>
+                    <p class="text-gray-500 text-[10px] sm:text-xs leading-relaxed">تصدير بصيغة .pcdz الآمنة</p>
                 </div>
             </div>
         </div>
@@ -416,10 +355,9 @@
                         فك التشفير
                     </h4>
                     <ul class="text-gray-400 text-xs sm:text-sm space-y-1.5 sm:space-y-2 pr-8">
-                        <li class="flex items-start gap-1.5"><svg class="icon-sm text-gray-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>بدّل الوضع إلى "فك التشفير" من الشريط العلوي</li>
+                        <li class="flex items-start gap-1.5"><svg class="icon-sm text-gray-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>بدّل الوضع إلى "فك التشفير" من الزر العلوي</li>
                         <li class="flex items-start gap-1.5"><svg class="icon-sm text-gray-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>اختر الملف المشفر (بصيغة .pcdz)</li>
-                        <li class="flex items-start gap-1.5"><svg class="icon-sm text-gray-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>أدخل كلمة المرور الصحيحة</li>
-                        <li class="flex items-start gap-1.5"><svg class="icon-sm text-gray-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>سيتم التحقق من سلامة البيانات ثم تحميل الملف الأصلي</li>
+                        <li class="flex items-start gap-1.5"><svg class="icon-sm text-gray-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>أدخل كلمة المرور الصحيحة وسيتم تحميل الملف الأصلي</li>
                     </ul>
                 </div>
                 <div class="glass-card rounded-xl p-4 sm:p-6 border-amber-500/20">
@@ -466,609 +404,6 @@
         <span id="toast-text"></span>
     </div>
 
-    <script>
-        /* ==================== الجسيمات ==================== */
-        var pCanvas = document.getElementById('particles-canvas');
-        var pCtx = pCanvas.getContext('2d');
-        var particlesArr = [];
-        var animFrameId = null;
-
-        function resizeParticles() {
-            pCanvas.width = window.innerWidth;
-            pCanvas.height = window.innerHeight;
-        }
-        resizeParticles();
-        window.addEventListener('resize', resizeParticles);
-
-        /* إيقاف الرسوم عندما التبويب غير مرئي */
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
-            } else {
-                if (!animFrameId) animateParticles();
-            }
-        });
-
-        function createParticle() {
-            return {
-                x: Math.random() * pCanvas.width,
-                y: Math.random() * pCanvas.height,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-                size: Math.random() * 1.5 + 0.5,
-                opacity: Math.random() * 0.4 + 0.1
-            };
-        }
-
-        for (var i = 0; i < 60; i++) particlesArr.push(createParticle());
-
-        function animateParticles() {
-            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-            var w = pCanvas.width, h = pCanvas.height;
-            for (var i = 0; i < particlesArr.length; i++) {
-                var p = particlesArr[i];
-                p.x += p.vx; p.y += p.vy;
-                if (p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
-                    particlesArr[i] = createParticle();
-                    p = particlesArr[i];
-                }
-                pCtx.beginPath();
-                pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                pCtx.fillStyle = 'rgba(0,200,150,' + p.opacity + ')';
-                pCtx.fill();
-            }
-            /* خطوط الربط */
-            for (var i = 0; i < particlesArr.length; i++) {
-                for (var j = i + 1; j < particlesArr.length; j++) {
-                    var dx = particlesArr[i].x - particlesArr[j].x;
-                    var dy = particlesArr[i].y - particlesArr[j].y;
-                    var dist = dx * dx + dy * dy;
-                    if (dist < 14400) { /* 120^2 */
-                        pCtx.beginPath();
-                        pCtx.moveTo(particlesArr[i].x, particlesArr[i].y);
-                        pCtx.lineTo(particlesArr[j].x, particlesArr[j].y);
-                        pCtx.strokeStyle = 'rgba(0,200,150,' + (0.06 * (1 - Math.sqrt(dist) / 120)) + ')';
-                        pCtx.lineWidth = 0.5;
-                        pCtx.stroke();
-                    }
-                }
-            }
-            animFrameId = requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        /* ==================== ظهور العناصر ==================== */
-        var revealObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.scroll-reveal').forEach(function(el) { revealObserver.observe(el); });
-
-        /* ==================== الحالة ==================== */
-        var fileMode = 'encrypt';
-        var selectedFile = null;
-        var currentKeyLength = 32;
-        var downloadBlob = null;
-        var downloadFileName = '';
-        var currentGeneratedKey = '';
-        var currentGeneratedPassword = '';
-        var isProcessing = false;
-
-        /* ==================== التبويبات ==================== */
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(function(b) {
-                b.classList.remove('tab-active'); b.classList.add('text-gray-400');
-            });
-            var activeBtn = document.getElementById('tab-' + tab);
-            activeBtn.classList.add('tab-active');
-            activeBtn.classList.remove('text-gray-400');
-            ['file', 'text', 'keygen'].forEach(function(t) {
-                document.getElementById('panel-' + t).classList.toggle('hidden', t !== tab);
-            });
-        }
-
-        /* ==================== تبديل الوضع ==================== */
-        function toggleMode() {
-            var toggle = document.getElementById('mode-toggle');
-            var btnText = document.getElementById('action-btn-text');
-            var iconSvg = document.getElementById('action-icon');
-            if (fileMode === 'encrypt') {
-                fileMode = 'decrypt';
-                toggle.classList.add('decrypt');
-                btnText.textContent = 'فك تشفير الملف';
-                iconSvg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/>';
-            } else {
-                fileMode = 'encrypt';
-                toggle.classList.remove('decrypt');
-                btnText.textContent = 'تشفير الملف';
-                iconSvg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>';
-            }
-            document.getElementById('file-result').classList.add('hidden');
-        }
-
-        /* ==================== التعامل مع الملفات ==================== */
-        var dropZone = document.getElementById('file-drop-zone');
-        dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
-        dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
-        dropZone.addEventListener('drop', function(e) {
-            e.preventDefault(); dropZone.classList.remove('drag-over');
-            if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
-        });
-
-        function handleFileSelect(event) {
-            if (event.target.files.length > 0) handleFile(event.target.files[0]);
-        }
-
-        function handleFile(file) {
-            selectedFile = file;
-            document.getElementById('file-name').textContent = file.name || 'ملف';
-            document.getElementById('file-size').textContent = formatFileSize(file.size);
-            document.getElementById('file-info').classList.remove('hidden');
-            document.getElementById('file-result').classList.add('hidden');
-            dropZone.classList.add('hidden');
-            downloadBlob = null;
-            downloadFileName = '';
-        }
-
-        function clearFile() {
-            selectedFile = null;
-            document.getElementById('file-input').value = '';
-            document.getElementById('file-info').classList.add('hidden');
-            document.getElementById('file-result').classList.add('hidden');
-            dropZone.classList.remove('hidden');
-            downloadBlob = null; downloadFileName = '';
-        }
-
-        function clearAll() {
-            clearFile();
-            document.getElementById('file-password').value = '';
-            document.getElementById('strength-bar').style.width = '0%';
-            document.getElementById('strength-text').textContent = '--';
-            document.getElementById('file-progress').classList.add('hidden');
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 B';
-            var k = 1024; var sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-            var idx = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, idx)).toFixed(2)) + ' ' + sizes[idx];
-        }
-
-        /* ==================== صيغة PicoCrypt (.pcdz) ==================== */
-        /*
-         * بنية الملف:
-         * [0:8]   التوقيع: "PicCrypt" (8 بايت ASCII)
-         * [8:12]  الإصدار: 1 (uint32 BE)
-         * [12:44] الملح: 32 بايت (عشوائي لـ PBKDF2)
-         * [44:48] التكرارات: 100000 (uint32 BE)
-         * [48:60] المتجه: 12 بايت (عشوائي لـ AES-GCM)
-         * [60:]   النص المشفر (يتضمن 16 بايت GCM auth tag)
-         */
-
-        var MAGIC = new Uint8Array([0x50, 0x69, 0x63, 0x43, 0x72, 0x79, 0x70, 0x74]); // "PicCrypt"
-        var MAGIC_STR = 'PicCrypt';
-        var PC_VERSION = 1;
-        var PC_ITERATIONS = 100000;
-        var HEADER_SIZE = 60; /* 8 + 4 + 32 + 4 + 12 */
-
-        function uint32ToBE(n) {
-            return new Uint8Array([(n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff]);
-        }
-
-        function uint32FromBE(arr) {
-            return ((arr[0] << 24) | (arr[1] << 16) | (arr[2] << 8) | arr[3]) >>> 0;
-        }
-
-        /* تحويل Uint8Array إلى Base64 آمن */
-        function uint8ToBase64(bytes) {
-            var binary = '';
-            for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-            return btoa(binary);
-        }
-
-        /* اشتقاق المفتاح من كلمة المرور */
-        async function deriveKey(password, salt, iterations) {
-            iterations = iterations || PC_ITERATIONS;
-            var enc = new TextEncoder();
-            var keyMaterial = await crypto.subtle.importKey(
-                'raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']
-            );
-            return await crypto.subtle.deriveKey(
-                { name: 'PBKDF2', salt: salt, iterations: iterations, hash: 'SHA-256' },
-                keyMaterial,
-                { name: 'AES-GCM', length: 256 },
-                false,
-                ['encrypt', 'decrypt']
-            );
-        }
-
-        /* تشفير الملف كاملاً بعملية AES-GCM واحدة — طريقة صحيحة وآمنة */
-        async function encryptFilePico(file, password, onProgress) {
-            if (onProgress) onProgress(5, 'قراءة الملف...');
-
-            var fileData = await file.arrayBuffer();
-            if (onProgress) onProgress(20, 'توليد المعاملات...');
-
-            var salt = crypto.getRandomValues(new Uint8Array(32));
-            var iv = crypto.getRandomValues(new Uint8Array(12));
-            if (onProgress) onProgress(25, 'اشتقاق المفتاح...');
-
-            var key = await deriveKey(password, salt);
-            if (onProgress) onProgress(60, 'تشفير البيانات...');
-
-            var encrypted = await crypto.subtle.encrypt(
-                { name: 'AES-GCM', iv: iv }, key, fileData
-            );
-            if (onProgress) onProgress(90, 'بناء الملف...');
-
-            var ctBytes = new Uint8Array(encrypted);
-            var result = new Uint8Array(HEADER_SIZE + ctBytes.length);
-
-            result.set(MAGIC, 0);                         /* [0:8]   التوقيع */
-            result.set(uint32ToBE(PC_VERSION), 8);        /* [8:12]  الإصدار */
-            result.set(salt, 12);                          /* [12:44] الملح */
-            result.set(uint32ToBE(PC_ITERATIONS), 44);    /* [44:48] التكرارات */
-            result.set(iv, 48);                            /* [48:60] المتجه */
-            result.set(ctBytes, 60);                       /* [60:]   النص المشفر */
-
-            if (onProgress) onProgress(100, 'اكتمل التشفير!');
-            return result;
-        }
-
-        /* فك تشفير الملف */
-        async function decryptFilePico(file, password, onProgress) {
-            if (onProgress) onProgress(5, 'قراءة الملف...');
-
-            var data = new Uint8Array(await file.arrayBuffer());
-            if (onProgress) onProgress(20, 'تحليل الملف...');
-
-            if (data.byteLength < HEADER_SIZE + 16) {
-                throw new Error('الملف تالف — الحجم صغير جداً');
-            }
-
-            /* التحقق من التوقيع */
-            var magicStr = String.fromCharCode.apply(null, data.slice(0, 8));
-            if (magicStr !== MAGIC_STR) {
-                throw new Error('ليس ملف PicoCrypt صالح (.pcdz)');
-            }
-
-            /* تحليل الترويسة */
-            var version = uint32FromBE(data.slice(8, 12));
-            if (version !== PC_VERSION) {
-                throw new Error('إصدار غير مدعوم: ' + version);
-            }
-
-            var salt = new Uint8Array(data.slice(12, 44));
-            var iterations = uint32FromBE(data.slice(44, 48));
-            var iv = new Uint8Array(data.slice(48, 60));
-            var ciphertext = new Uint8Array(data.slice(60));
-
-            if (ciphertext.byteLength === 0) {
-                throw new Error('لا توجد بيانات مشفرة في الملف');
-            }
-
-            if (onProgress) onProgress(30, 'اشتقاق المفتاح...');
-
-            var key = await deriveKey(password, salt, iterations);
-            if (onProgress) onProgress(70, 'فك التشفير...');
-
-            try {
-                var decrypted = await crypto.subtle.decrypt(
-                    { name: 'AES-GCM', iv: iv }, key, ciphertext
-                );
-                if (onProgress) onProgress(100, 'اكتمل فك التشفير!');
-                return new Uint8Array(decrypted);
-            } catch (e) {
-                throw new Error('كلمة المرور غير صحيحة أو الملف تالف');
-            }
-        }
-
-        /* تشفير النص */
-        async function encryptText(text, password) {
-            var salt = crypto.getRandomValues(new Uint8Array(32));
-            var iv = crypto.getRandomValues(new Uint8Array(12));
-            var key = await deriveKey(password, salt);
-
-            var enc = new TextEncoder();
-            var data = enc.encode(text);
-            var encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, data);
-
-            var ctBytes = new Uint8Array(encrypted);
-            var combined = new Uint8Array(HEADER_SIZE + ctBytes.length);
-            combined.set(MAGIC, 0);
-            combined.set(uint32ToBE(PC_VERSION), 8);
-            combined.set(salt, 12);
-            combined.set(uint32ToBE(PC_ITERATIONS), 44);
-            combined.set(iv, 48);
-            combined.set(ctBytes, 60);
-
-            return 'PCDZ:' + uint8ToBase64(combined);
-        }
-
-        /* فك تشفير النص */
-        async function decryptText(encoded, password) {
-            if (!encoded.startsWith('PCDZ:')) {
-                throw new Error('النص غير مشفر بصيغة PicoCrypt');
-            }
-
-            var b64 = encoded.slice(5);
-            var data;
-            try {
-                var raw = atob(b64);
-                data = new Uint8Array(raw.length);
-                for (var i = 0; i < raw.length; i++) data[i] = raw.charCodeAt(i);
-            } catch (e) {
-                throw new Error('البيانات المشفرة تالفة');
-            }
-
-            if (data.byteLength < HEADER_SIZE + 16) {
-                throw new Error('البيانات غير كافية');
-            }
-
-            var magicStr = String.fromCharCode.apply(null, data.slice(0, 8));
-            if (magicStr !== MAGIC_STR) {
-                throw new Error('تنسيق غير صالح');
-            }
-
-            var salt = new Uint8Array(data.slice(12, 44));
-            var iterations = uint32FromBE(data.slice(44, 48));
-            var iv = new Uint8Array(data.slice(48, 60));
-            var ciphertext = new Uint8Array(data.slice(60));
-
-            var key = await deriveKey(password, salt, iterations);
-
-            try {
-                var decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, ciphertext);
-                return new TextDecoder().decode(decrypted);
-            } catch (e) {
-                throw new Error('كلمة المرور غير صحيحة');
-            }
-        }
-
-        /* ==================== معالجة الملف ==================== */
-        async function processFile() {
-            if (isProcessing) return;
-
-            var password = document.getElementById('file-password').value;
-            if (!selectedFile) { showToast('يرجى اختيار ملف أولاً'); return; }
-            if (!password) { showToast('يرجى إدخال كلمة المرور'); return; }
-            if (password.length < 4) { showToast('كلمة المرور قصيرة جداً (4 أحرف على الأقل)'); return; }
-
-            /* تحذير للملفات الكبيرة */
-            if (selectedFile.size > 100 * 1024 * 1024) {
-                showToast('الملف كبير — قد يستغرق وقتاً أطول');
-            }
-
-            var btn = document.getElementById('file-action-btn');
-            var btnText = document.getElementById('action-btn-text');
-            var progressDiv = document.getElementById('file-progress');
-            var progressFill = document.getElementById('progress-fill');
-            var progressLabel = document.getElementById('progress-label');
-            var progressPercent = document.getElementById('progress-percent');
-            var resultDiv = document.getElementById('file-result');
-
-            /* تعطيل الزر أثناء المعالجة */
-            isProcessing = true;
-            btn.disabled = true;
-            var originalText = btnText.textContent;
-            btnText.textContent = 'جاري المعالجة...';
-
-            progressDiv.classList.remove('hidden');
-            resultDiv.classList.add('hidden');
-            progressFill.style.width = '0%';
-
-            function onProgress(pct, label) {
-                progressFill.style.width = pct + '%';
-                progressPercent.textContent = pct + '%';
-                if (label) progressLabel.textContent = label;
-            }
-
-            try {
-                var result;
-                var fileName;
-
-                if (fileMode === 'encrypt') {
-                    result = await encryptFilePico(selectedFile, password, onProgress);
-                    fileName = selectedFile.name + '.pcdz';
-                } else {
-                    result = await decryptFilePico(selectedFile, password, onProgress);
-                    fileName = selectedFile.name.replace(/\.pcdz$/, '') || 'decrypted_file';
-                }
-
-                downloadBlob = new Blob([result]);
-                downloadFileName = fileName;
-
-                setTimeout(function() {
-                    resultDiv.classList.remove('hidden');
-                    document.getElementById('result-title').textContent = fileMode === 'encrypt' ? 'تم التشفير بنجاح!' : 'تم فك التشفير بنجاح!';
-                    document.getElementById('result-desc').textContent = 'الحجم: ' + formatFileSize(result.byteLength) + ' — ' + fileName;
-                }, 200);
-
-            } catch (error) {
-                progressDiv.classList.add('hidden');
-                showToast(error.message);
-            } finally {
-                isProcessing = false;
-                btn.disabled = false;
-                btnText.textContent = originalText;
-            }
-        }
-
-        /* ==================== التحميل ==================== */
-        function triggerDownload() {
-            if (!downloadBlob || !downloadFileName) { showToast('لا يوجد ملف للتحميل'); return; }
-
-            var url = URL.createObjectURL(downloadBlob);
-            var link = document.createElement('a');
-            link.href = url;
-            link.download = downloadFileName;
-            document.body.appendChild(link);
-            link.click();
-
-            setTimeout(function() {
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            }, 200);
-
-            showToast('جاري تحميل: ' + downloadFileName);
-        }
-
-        /* ==================== معالجة النص ==================== */
-        async function processText(mode) {
-            var input = document.getElementById('text-input').value;
-            var password = document.getElementById('text-password').value;
-            if (!input.trim()) { showToast('يرجى إدخال نص'); return; }
-            if (!password) { showToast('يرجى إدخال كلمة المرور'); return; }
-
-            var output = document.getElementById('text-output');
-            output.value = 'جاري المعالجة...';
-
-            try {
-                var result;
-                if (mode === 'encrypt') {
-                    result = await encryptText(input, password);
-                } else {
-                    result = await decryptText(input, password);
-                }
-                output.value = result;
-                showToast(mode === 'encrypt' ? 'تم التشفير بنجاح' : 'تم فك التشفير بنجاح');
-            } catch (error) {
-                output.value = '';
-                showToast(error.message);
-            }
-        }
-
-        function copyText() {
-            var output = document.getElementById('text-output').value;
-            if (output && output !== 'جاري المعالجة...') {
-                navigator.clipboard.writeText(output).then(function() { showToast('تم نسخ النص'); });
-            }
-        }
-
-        /* ==================== توليد المفاتيح وكلمات المرور ==================== */
-        function setKeyLength(len) {
-            currentKeyLength = len;
-            document.querySelectorAll('.key-len-btn').forEach(function(b) {
-                b.classList.remove('tab-active');
-                b.classList.add('border', 'border-gray-700', 'text-gray-400');
-            });
-            var btn = document.querySelector('.key-len-btn[data-len="' + len + '"]');
-            btn.classList.add('tab-active');
-            btn.classList.remove('border-gray-700', 'text-gray-400');
-        }
-
-        function generateKey() {
-            var display = document.getElementById('generated-key');
-            display.textContent = 'جاري التوليد...';
-
-            var randomBytes = crypto.getRandomValues(new Uint8Array(currentKeyLength));
-            var hex = Array.from(randomBytes, function(b) {
-                return b.toString(16).padStart(2, '0');
-            }).join('');
-            currentGeneratedKey = hex;
-
-            /* حركة التوليد */
-            var chars = '0123456789abcdef';
-            var iterations = 0;
-            var maxIter = 12;
-
-            var interval = setInterval(function() {
-                var animated = '';
-                var revealCount = Math.floor(iterations * (hex.length / maxIter));
-                for (var i = 0; i < hex.length; i++) {
-                    animated += (i < revealCount) ? hex[i] : chars[Math.floor(Math.random() * chars.length)];
-                }
-                display.textContent = animated;
-                iterations++;
-                if (iterations >= maxIter) {
-                    clearInterval(interval);
-                    display.textContent = hex;
-                    showToast('تم توليد المفتاح');
-                }
-            }, 50);
-        }
-
-        function generatePassword() {
-            var length = parseInt(document.getElementById('pass-length').value);
-            var chars = '';
-            if (document.getElementById('pass-upper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if (document.getElementById('pass-lower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
-            if (document.getElementById('pass-numbers').checked) chars += '0123456789';
-            if (document.getElementById('pass-symbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
-            if (!chars) { showToast('اختر مجموعة أحرف واحدة على الأقل'); return; }
-
-            var randomValues = crypto.getRandomValues(new Uint8Array(length));
-            var password = '';
-            for (var i = 0; i < length; i++) password += chars[randomValues[i] % chars.length];
-
-            currentGeneratedPassword = password;
-            document.getElementById('generated-password').textContent = password;
-        }
-
-        function copyGeneratedKey() {
-            if (!currentGeneratedKey) { showToast('لا يوجد مفتاح للنسخ'); return; }
-            navigator.clipboard.writeText(currentGeneratedKey).then(function() { showToast('تم نسخ المفتاح'); });
-        }
-
-        function copyGeneratedPassword() {
-            if (!currentGeneratedPassword) { showToast('لا توجد كلمة مرور للنسخ'); return; }
-            navigator.clipboard.writeText(currentGeneratedPassword).then(function() { showToast('تم نسخ كلمة المرور'); });
-        }
-
-        /* ==================== أدوات مساعدة ==================== */
-        function togglePassword(id) {
-            var el = document.getElementById(id);
-            el.type = el.type === 'password' ? 'text' : 'password';
-        }
-
-        function checkPasswordStrength(password) {
-            var bar = document.getElementById('strength-bar');
-            var text = document.getElementById('strength-text');
-            if (!password) {
-                bar.style.width = '0%';
-                bar.className = 'h-full rounded-full transition-all duration-300';
-                text.textContent = '--';
-                return;
-            }
-            var score = 0;
-            if (password.length >= 8) score++;
-            if (password.length >= 12) score++;
-            if (password.length >= 16) score++;
-            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
-            if (/\d/.test(password)) score++;
-            if (/[^a-zA-Z0-9]/.test(password)) score++;
-
-            var strength, percent, colorClass;
-            if (score <= 2) { strength = 'ضعيفة'; percent = 25; colorClass = 'strength-weak'; }
-            else if (score <= 3) { strength = 'متوسطة'; percent = 50; colorClass = 'strength-fair'; }
-            else if (score <= 4) { strength = 'جيدة'; percent = 75; colorClass = 'strength-good'; }
-            else { strength = 'قوية جداً'; percent = 100; colorClass = 'strength-strong'; }
-
-            bar.style.width = percent + '%';
-            bar.className = 'h-full rounded-full transition-all duration-300 ' + colorClass;
-            text.textContent = strength;
-        }
-
-        var toastTimer = null;
-        function showToast(message) {
-            var toast = document.getElementById('toast');
-            document.getElementById('toast-text').textContent = message;
-            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-            toast.classList.add('opacity-100', 'translate-y-0');
-            if (toastTimer) clearTimeout(toastTimer);
-            toastTimer = setTimeout(function() {
-                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-                toast.classList.remove('opacity-100', 'translate-y-0');
-            }, 3000);
-        }
-
-        /* التنقل السلس */
-        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                var target = document.querySelector(this.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
